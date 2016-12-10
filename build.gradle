@@ -1,0 +1,49 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'demo'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	//Eureka client for service registration and discovery
+	compile('org.springframework.cloud:spring-cloud-starter-eureka:1.1.0.RELEASE')
+	//Config server client for fetching the configuration server
+	compile('org.springframework.cloud:spring-cloud-config-client:1.2.1.RELEASE')
+	compile('org.springframework.cloud:spring-cloud-starter-zuul')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	//Spring Sleuth
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '1.1.0.RELEASE'
+	//If you want both Sleuth and Zipkin just add the spring-cloud-starter-zipkin dependency.
+	//Here Sleuth and Zipkin will talk using http.
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-sleuth-zipkin', version: '1.1.0.RELEASE'
+	
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5"
+	}
+}
