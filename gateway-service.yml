@@ -1,0 +1,47 @@
+# springcloud-resttemplateclient.yml
+configuration:  
+  projectName: gateway-service
+server:
+#Port at which usermanagement-service is running
+  port: 1113
+
+#properties used by microserice in code
+
+message:
+  greeting: Hello from zuul gateway service
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+    healthcheck:
+      enabled: true
+    lease:
+      duration: 5
+
+ribbon:
+  eureka:
+    enabled: true
+
+zuul: 
+  routes:       
+    users:  
+      path: /users/**
+      #Here serviceID means application name defined in service config
+      serviceId: usermanagement-service
+      strip-prefix: false
+
+spring:
+  zipkin:
+    baseUrl: http://192.168.99.100:9411/
+  sleuth:
+    sampler:
+      percentage: 0.9
+
+sample:
+  zipkin:
+    enabled: true
+
